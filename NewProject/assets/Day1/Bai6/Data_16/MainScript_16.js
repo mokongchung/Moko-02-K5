@@ -6,7 +6,7 @@ cc.Class({
 
         lblStart        : cc.Label,
         lblExit         : cc.Label,
-        btnStart        : cc.Button,
+        nodeBtnStart    : cc.Node,
     
         strExit         : "GoodBye!",
         strStart        : "Game is starting...",
@@ -20,15 +20,22 @@ cc.Class({
     },
 
     start () {
-
+		
+		this.lblStart.enabled = false;
+		this.lblExit.enabled  = false;
     },
 
     onBtnStartClick(){
-        this.lblStart.string = this.strStart;
+    this.lblStart.string 		    = this.strStart;
+		this.nodeBtnStart.active   	= false;
+		this.lblStart.enabled  		  = true;
     },
 
     onBtnExitClick(){
-        this.lblExit.string = this.strExit;
+    this.lblExit.string 		    = this.strExit;
+		this.nodeBtnStart.active   	= false;
+		this.lblExit.enabled  		  = true;
+		this.lblStart.enabled 		  = false;
     }
 
     // update (dt) {},
