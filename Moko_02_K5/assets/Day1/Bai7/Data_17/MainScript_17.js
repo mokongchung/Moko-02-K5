@@ -3,8 +3,8 @@ cc.Class({
     extends: cc.Component,
 
     properties: { 
-        btnPower    :cc.Button,
-        lblPewer    :cc.Label,
+        
+        lblPower    :cc.Label,
         inputHP     :cc.EditBox,
         inputMP     :cc.EditBox,
         
@@ -20,8 +20,8 @@ cc.Class({
         
     },
 
-    onBtnAtkClick(){
-    
+    onBtnPowerClick(){
+        this.lblPower.string = "Power: "+ ( Number(this.inputHP.string)  *  Number(this.inputMP.string) );
     }
 
     // update (dt) {},
