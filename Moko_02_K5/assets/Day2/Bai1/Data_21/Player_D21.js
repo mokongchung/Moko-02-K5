@@ -28,6 +28,8 @@ cc.Class({
         lblPlayerAtk        : cc.Label,
         lblPlayerDef        : cc.Label,
         lblPlayerEnergy     : cc.Label,
+
+        proBarHPPlayer      : cc.ProgressBar,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -35,6 +37,7 @@ cc.Class({
     onLoad () {
         this.atk = 1;
         this.def = 1;
+        this.HPMax = this.HP;
     },
 
     start () {
@@ -47,6 +50,8 @@ cc.Class({
         this.lblPlayerAtk.string    = "Atk: "+this.atk;
         this.lblPlayerDef.string    = "Def: "+this.def;
         this.lblPlayerEnergy.string = "Energy:"+this.energy;
+
+        this.proBarHPPlayer.progress = (this.HP / this.HPMax); 
     },
     attack() {
         return this.atk;       
@@ -59,6 +64,7 @@ cc.Class({
             return;
         this.HP -= dmg;
         this.lblPlayerHP.string     = "HP: "+this.HP;
+        this.proBarHPPlayer.progress = (this.HP / this.HPMax) ;
         if( this.HP <= 0 )
             this.isDead = true;
     },

@@ -13,6 +13,8 @@ cc.Class({
         lblEnemyHP  : cc.Label,
         lblEnemyAtk : cc.Label,
         lblEnemyDef : cc.Label,
+
+        proBarHPenemy : cc.ProgressBar,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -20,6 +22,7 @@ cc.Class({
         return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     onLoad () {
+        this.HPMax = this.HP;
         this.atk = 1;
         this.def = 1;
     },
@@ -33,6 +36,7 @@ cc.Class({
         this.lblEnemyAtk.string = "Atk: "+this.atk;
         this.lblEnemyDef.string = "Def: "+this.def;
 
+        this.proBarHPenemy.progress = (this.HP / this.HPMax);
     },
     attack() {
         
@@ -47,6 +51,7 @@ cc.Class({
         this.HP -= dmg;
         console.log( "Hp" + this.HP )
         this.lblEnemyHP.string  = "HP: "+this.HP;
+        this.proBarHPenemy.progress = (this.HP / this.HPMax);
         if( this.HP <= 0 )
             this.isDead = true;
     },
