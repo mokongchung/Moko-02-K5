@@ -66,7 +66,7 @@
     "_is3DNode": true,
     "groupIndex": 0,
     "autoReleaseAssets": false,
-    "_id": "95da85ed-6dd3-4707-ac92-78437de59b9a"
+    "_id": "27573abd-7ff8-4e30-a46b-ff206cc96116"
   },
   {
     "__type__": "cc.Node",
@@ -168,7 +168,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 374.1229744348775
+      "z": 373.2569490310931
     },
     "_scale": {
       "__type__": "cc.Vec3",
