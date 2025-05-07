@@ -49,7 +49,10 @@ cc.Class({
             this.btnPlayerRecovery.enabled  = false;
             this.lblControl.string = "Turn enemy!"
 
-            this.enemyAtk();
+            
+            this.scheduleOnce( ()=> {
+                this.enemyAtk()
+            }, 1); 
         }
         
     },
@@ -104,7 +107,8 @@ cc.Class({
         this.player.takeDmg( this.enemy.attack() );
 
         this.newTurn();
-    }
+    },
+    
 
 
     // update (dt) {},
