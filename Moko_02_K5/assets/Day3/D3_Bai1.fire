@@ -171,7 +171,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 372.39092362730867
+      "z": 219.104427157463
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -1857,15 +1857,20 @@
     "lblNoti": {
       "__id__": 6
     },
-    "spriteFrame1": {
-      "__uuid__": "ca845540-c7e2-46e0-883d-537befcb6e5a"
-    },
-    "spriteFrame2": {
-      "__uuid__": "a0aa7467-4b34-4b00-9bbc-0c16392396b5"
-    },
-    "spriteFrame3": {
-      "__uuid__": "4c731964-e859-4fd7-91a2-c8890132446b"
-    },
+    "spriteFramesArray": [
+      {
+        "__uuid__": "a0aa7467-4b34-4b00-9bbc-0c16392396b5"
+      },
+      {
+        "__uuid__": "ca845540-c7e2-46e0-883d-537befcb6e5a"
+      },
+      {
+        "__uuid__": "4c731964-e859-4fd7-91a2-c8890132446b"
+      },
+      {
+        "__uuid__": "d7003b8e-cf03-4190-9d15-90e0ff1a7f40"
+      }
+    ],
     "_id": "12C5L3/U1Hyou/SZiuUSez"
   },
   {
@@ -2395,9 +2400,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -2480,24 +2483,16 @@
       "b": 120,
       "a": 200
     },
-    "_N$normalSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
+    "_N$normalSprite": null,
     "_N$pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
+      "__uuid__": "39756a94-5ea9-49b5-ad9c-8b7a7963767a"
     },
     "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
+      "__uuid__": "39756a94-5ea9-49b5-ad9c-8b7a7963767a"
     },
-    "_N$hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$hoverSprite": null,
+    "hoverSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 52
     },

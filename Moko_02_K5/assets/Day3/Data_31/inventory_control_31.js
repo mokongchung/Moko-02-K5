@@ -1,7 +1,7 @@
 
 cc.Class({
     extends: cc.Component,
-
+    
     properties: {
         itemPrefab: cc.Prefab,
         inventoryView: cc.Node,
@@ -13,12 +13,13 @@ cc.Class({
 
         lblNoti: cc.Label,
 
-        spriteFrame1: cc.SpriteFrame,
-        spriteFrame2: cc.SpriteFrame,
-        spriteFrame3: cc.SpriteFrame,
+        spriteFramesArray: {
+            default: [],
+            type: [cc.SpriteFrame]
+        }
 
     },
-
+    
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -28,23 +29,24 @@ cc.Class({
 
     start () {
 
+        
         let itemData = [
-            { id: 1, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 0},
-            { id: 2, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 1},
-            { id: 3, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 2},
-            { id: 4, nameItem: "def point", quantityItem: 1 , typeItem: "consumable", effect: "def +10", equipSlot: -1, slot: 3},
-            { id: 5, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 4},
-            { id: 6, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 5},
-            { id: 7, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 6},
-            { id: 8, nameItem: "def point", quantityItem: 1 , typeItem: "consumable", effect: "def +10", equipSlot: -1, slot: 7},
-            { id: 9, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 8},
-            { id: 10, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 9},
-            { id: 11, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 10},
-            { id: 12, nameItem: "def point", quantityItem: 1 , typeItem: "consumable", effect: "def +10", equipSlot: -1, slot: 11},
-            { id: 13, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 12},
-            { id: 14, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 13},
-            { id: 15, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 14},
-            { id: 16, nameItem: "def point", quantityItem: 1 , typeItem: "consumable", effect: "def +10", equipSlot: -1, slot: 15},
+            { id: 1, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 0,sprite:0},
+            { id: 2, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 1,sprite:1},
+            { id: 3, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 2,sprite:2},
+            { id: 4, nameItem: "swold", quantityItem: 1 , typeItem: "equipment", effect: "ayk +10", equipSlot: -1, slot: 3,sprite:3},
+            { id: 5, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 4,sprite:1},
+            { id: 6, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 5,sprite:2},
+            { id: 7, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 6,sprite:0},
+            { id: 8, nameItem: "swold +2", quantityItem: 1 , typeItem: "equipment", effect: "atk +30", equipSlot: -1, slot: 7,sprite:3},
+            { id: 9, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 8,sprite:0},
+            { id: 10, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 9,sprite:2},
+            { id: 11, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 10,sprite:1},
+            { id: 12, nameItem: "swold +1", quantityItem: 1 , typeItem: "equipment", effect: "atk +20", equipSlot: -1, slot: 11,sprite:0},
+            { id: 13, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 12,sprite:1},
+            { id: 14, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 13,sprite:2},
+            { id: 15, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 14,sprite:0},
+            { id: 16, nameItem: "swold", quantityItem: 1 , typeItem: "equipment", effect: "atk +10", equipSlot: -1, slot: 15,sprite:3},
 
             
             
@@ -69,26 +71,18 @@ cc.Class({
 
             
                    
-            
-            //quick add icon item
-            let sprite = newItem.getChildByName("sprite_item");
-            
-            if (sprite) {
-                console.log("add icon");
-                sprite.spriteFrame = this.spriteFrame2;  
-            }
-            let button = newItem.getComponent("button");
-            if (button) {
-                button.pressed = this.spriteFrame1;  
-            }
-            
+            let spriteNode = newItem.getChildByName("sprite_item");
+            let sprite2 = spriteNode.getComponent(cc.Sprite);
+            console.log( "sprite2" + sprite2);
+            sprite2.spriteFrame = this.spriteFramesArray[data.sprite]; 
+
             this.inventoryView.addChild(newItem, data.slot); 
         }
         
         
     },
 
-
+    
     onItemSelectClick(slot){
         console.log(slot);
         
@@ -123,7 +117,7 @@ cc.Class({
         let item = this.inventoryView.children[this.selectSlot].getComponent("Item_31");
         switch(item.typeItem){
             case "consumable":
-                if( item.quantityItem > 2 ){
+                if( item.quantityItem >= 2 ){
                     item.quantityItem -=1;
                     this.lblNoti.string = "Use "+ item.nameItem +", quantity left: " + item.quantityItem;
                     this.lblInfoItemQuantity.string = "Quantity: " + item.quantityItem;
@@ -144,6 +138,5 @@ cc.Class({
             break;
         }
     }
-
-    // update (dt) {},
+        
 });
