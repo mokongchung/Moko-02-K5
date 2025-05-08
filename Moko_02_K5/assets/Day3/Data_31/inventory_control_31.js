@@ -13,6 +13,10 @@ cc.Class({
 
         lblNoti: cc.Label,
 
+        spriteFrame1: cc.SpriteFrame,
+        spriteFrame2: cc.SpriteFrame,
+        spriteFrame3: cc.SpriteFrame,
+
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -63,9 +67,22 @@ cc.Class({
             itemInfo.inventory_control = this;
             console.log(itemInfo.nameItem)
 
-
-            this.inventoryView.addChild(newItem, data.slot);        // Thêm vào scene
-            //this.instanceArray.push(newItem);   // Thêm vào mảng
+            
+                   
+            
+            //quick add icon item
+            let sprite = newItem.getChildByName("sprite_item");
+            
+            if (sprite) {
+                console.log("add icon");
+                sprite.spriteFrame = this.spriteFrame2;  
+            }
+            let button = newItem.getComponent("button");
+            if (button) {
+                button.pressed = this.spriteFrame1;  
+            }
+            
+            this.inventoryView.addChild(newItem, data.slot); 
         }
         
         
