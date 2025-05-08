@@ -4,6 +4,7 @@ cc.Class({
     
     properties: {
         itemPrefab: cc.Prefab,
+        itemEmptyPrefab: cc.Prefab,
         inventoryView: cc.Node,
 
         lblInfoItemName: cc.Label,
@@ -40,19 +41,22 @@ cc.Class({
             { id: 7, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 6,sprite:0},
             { id: 8, nameItem: "swold +2", quantityItem: 1 , typeItem: "equipment", effect: "atk +30", equipSlot: -1, slot: 7,sprite:3},
             { id: 9, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 8,sprite:0},
-            { id: 10, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 9,sprite:2},
+            { id: 10, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 20,sprite:2},
             { id: 11, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 10,sprite:1},
             { id: 12, nameItem: "swold +1", quantityItem: 1 , typeItem: "equipment", effect: "atk +20", equipSlot: -1, slot: 11,sprite:0},
             { id: 13, nameItem: "speed point", quantityItem: 4 , typeItem: "consumable", effect: "speed +10", equipSlot: -1, slot: 12,sprite:1},
             { id: 14, nameItem: "atk point", quantityItem: 5 , typeItem: "consumable", effect: "atk +10", equipSlot: -1, slot: 13,sprite:2},
-            { id: 15, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 14,sprite:0},
-            { id: 16, nameItem: "swold", quantityItem: 1 , typeItem: "equipment", effect: "atk +10", equipSlot: -1, slot: 15,sprite:3},
+            { id: 15, nameItem: "HP point", quantityItem: 5 , typeItem: "consumable", effect: "HP +10", equipSlot: -1, slot: 17,sprite:0},
+            { id: 16, nameItem: "swold", quantityItem: 1 , typeItem: "equipment", effect: "atk +10", equipSlot: -1, slot: 18,sprite:3},
 
             
             
         ];
-
-
+        
+        for (let i = 0; i < 20; i++){
+            let newItem = cc.instantiate(this.itemEmptyPrefab);
+            this.inventoryView.addChild(newItem); 
+        }
         
         for ( let data of itemData) {
             let newItem = cc.instantiate(this.itemPrefab);
@@ -76,13 +80,23 @@ cc.Class({
             console.log( "sprite2" + sprite2);
             sprite2.spriteFrame = this.spriteFramesArray[data.sprite]; 
 
-            this.inventoryView.addChild(newItem, data.slot); 
+            
+            let oldChild = this.inventoryView.children[data.slot];
+
+
+            this.swapChild(oldChild , newItem, data.slot);
+            //this.inventoryView.setSiblingIndex(data.slot);
+            
+            //this.inventoryView.addChild(newItem, data.slot); 
         }
         
         
     },
 
-    
+    swapChild( oldChild , newChild, index){
+        this.inventoryView.removeChild(oldChild);
+        this.inventoryView.insertChild(newChild, index);
+    },
     onItemSelectClick(slot){
         console.log(slot);
         
@@ -106,7 +120,11 @@ cc.Class({
         if(this.selectSlot < 0){
             this.lblNoti.string = "Select item to delete! "
         }
-        this.inventoryView.removeChild(this.inventoryView.children[this.selectSlot]);
+        let newChild = cc.instantiate(this.itemEmptyPrefab);
+        let oldChild = this.inventoryView.children[this.selectSlot]
+
+        this.swapChild(oldChild , newChild, this.selectSlot);
+        //this.inventoryView.removeChild(this.inventoryView.children[this.selectSlot]);
     },
 
     useItem(){
@@ -122,7 +140,7 @@ cc.Class({
                     this.lblNoti.string = "Use "+ item.nameItem +", quantity left: " + item.quantityItem;
                     this.lblInfoItemQuantity.string = "Quantity: " + item.quantityItem;
                     
-                }else{
+                }else if ( item.quantityItem == 1 ) {
                     
                     this.lblNoti.string = "Use "+ item.nameItem +", quantity left: 0" ;
                     this.deleteItem();

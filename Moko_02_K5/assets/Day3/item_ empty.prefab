@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "item",
+    "_name": "item_ empty",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -143,7 +143,7 @@
     "node": {
       "__id__": 2
     },
-    "_enabled": true,
+    "_enabled": false,
     "_materials": [
       {
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
@@ -172,9 +172,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "1ab6ebf2-a130-4b6b-a1ae-c70732898af1"
+      "__uuid__": "a53391a1-f2c1-4de0-835a-0763dd1081ac"
     },
-    "fileId": "ec9TiVFOdBa6zZuGeC2uNQ",
+    "fileId": "323fR18T1EP78ucYyWHwWC",
     "sync": false
   },
   {
@@ -184,7 +184,7 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true,
+    "_enabled": false,
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [],
@@ -252,12 +252,12 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true,
+    "_enabled": false,
     "nameItem": "",
     "quantityItem": -1,
     "typeItem": "",
     "effect": "",
-    "equipSlot": -1,
+    "equipSlot": 0,
     "slot": 0,
     "inventory_control": null,
     "_id": ""
@@ -268,9 +268,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "1ab6ebf2-a130-4b6b-a1ae-c70732898af1"
+      "__uuid__": "a53391a1-f2c1-4de0-835a-0763dd1081ac"
     },
-    "fileId": "141hDI7zpGFpsLCumxq2Ib",
+    "fileId": "edQtqPb+dA3Z7YC1Ze/WdV",
     "sync": false
   }
 ]
