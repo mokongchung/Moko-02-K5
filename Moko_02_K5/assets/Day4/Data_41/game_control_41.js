@@ -15,6 +15,7 @@ cc.Class({
 
         timePlay : 60,
         timeSpam : 1,
+        timeUpdateTimeBar : 0.1,
 
         camera : cc.Camera,
         listPrefabEnemy : cc.Prefab,
@@ -22,12 +23,16 @@ cc.Class({
         nodeBtnStart    : cc.Node,
         lblShowpoint : cc.Label,
         lblShowEndGamePoint : cc.Label,
+        proBarTimePlayBar  :cc.ProgressBar,
+        
+        nodeCrosshair : cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
      onLoad () {
         this.point = 0;
+        this.timeLeft = 0;
         this.listEnemy;
         this.stopGame = false;
      },
@@ -38,7 +43,7 @@ cc.Class({
         console.log( this.listEnemy  +"  "+this.listEnemy.length);
         //this.spawRandomEnemy();
         //this.startGame(1, 5);
-
+        this.customCrosshair();
 
        
     },
@@ -104,7 +109,14 @@ cc.Class({
     startGame( timeSpaw = 1, timePlay = 60) {
         console.log("game  start");
 
+        this.point = 0;
+        this.timeLeft = timePlay;
+        this.lblShowpoint.string = "Point: "+ this.point;
+        this.lblShowEndGamePoint.enabled = false;
+
+
         this.schedule(this.spawRandomEnemy, timeSpaw); 
+        this.schedule(this.updateTimeBar, this.timeUpdateTimeBar);
         this.scheduleOnce(function () {
             this.unschedule(this.spawRandomEnemy); 
             console.log("game over");
@@ -113,11 +125,23 @@ cc.Class({
             this.lblShowEndGamePoint.string = " Your Point : "+ this.point;
         }, timePlay);
     },
-    buttonStartGameOnClick(){
 
-        this.point = 0;
-        this.lblShowpoint.string = "Point: "+ this.point;
-        this.lblShowEndGamePoint.enabled = false;
+    updateTimeBar(){
+        this.timeLeft -= this.timeUpdateTimeBar;
+        if(this.timeLeft <= 0)
+            this.timeLeft = 0; 
+        this.proBarTimePlayBar.progress = (this.timeLeft / this.timePlay);
+    },
+
+    customCrosshair(){
+        this.canvasNode.node.on(cc.Node.EventType.MOUSE_MOVE, (event) =>{
+            let pos = event.getLocation();
+            console.log( "custome "+pos +" " + this.nodeCrosshair);
+            this.nodeCrosshair.setPosition(this.canvasNode.node.convertToNodeSpaceAR(pos));
+        });
+    },
+
+    buttonStartGameOnClick(){
         this.nodeBtnStart.active = false;
         this.startGame(this.timeSpam ,this.timePlay);
     },
