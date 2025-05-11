@@ -29,17 +29,21 @@ cc.Class({
         this.point = this.getRandomInt(this.pointMin, this.pointMax);
         this.HP = this.getRandomInt(this.HPMin, this.HPMax);
         this.timeLife = this.getRandomInt(this.timeLifeMin*10, this.timeLifeMax*10)/10;
+        this.isDead = false;
     },
 
     start () {
         this.scheduleOnce( ()=> {
-            this.node.destroy()
+            if(!this.isDead){
+                this.node.destroy()
+            }
         }, this.timeLife); 
         
     },
 
     onEnemyClick(){
         console.log("get hit");
+        this.isDead = true;
         //this.node.destroy();
         let event = new cc.Event.EventCustom('hitEnemy', true); // bubbling = true
         event.detail = { node: this.node  , point: this.point };
