@@ -21,6 +21,9 @@ cc.Class({
         timeLife: 0.5,
         timeLifeMin :  0.3,
         timeLifeMax :  0.8,
+        scaleMin    : 0.5,
+        scaleMax    : 2,  
+
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -29,10 +32,12 @@ cc.Class({
         this.point = this.getRandomInt(this.pointMin, this.pointMax);
         this.HP = this.getRandomInt(this.HPMin, this.HPMax);
         this.timeLife = this.getRandomInt(this.timeLifeMin*10, this.timeLifeMax*10)/10;
+        this.scaleEnemy = this.getRandomInt(this.scaleMin*10, this.scaleMax*10)/10;
         this.isDead = false;
     },
 
     start () {
+        this.node.setScale(this.scaleEnemy);
         this.scheduleOnce( ()=> {
             if(!this.isDead){
                 this.node.destroy()
