@@ -73,6 +73,8 @@ cc.Class({
         
         for (let i = 0; i < this.maxSlot; i++){
             let newItem = cc.instantiate( this.listItem.itemEmpty);
+            newItem.getComponent("Item_31").slot = i;
+            newItem.getComponent("Item_31").inventory_control = this;
             this.inventoryView.addChild(newItem); 
         }
         
@@ -117,6 +119,10 @@ cc.Class({
         
         let item = this.inventoryView.children[this.selectSlot].getComponent("Item_31");
         
+        if(item.quantityItem < 0){
+            return;
+        }
+
         this.lblInfoItemName.string =  "Name: " + item.nameItem;
         this.lblInfoItemQuantity.string = "Quantity: " + item.quantityItem;
         this.lblInfoItemType.string = "Type: "+ item.typeItem;
@@ -128,8 +134,10 @@ cc.Class({
         if(this.selectSlot < 0){
             this.lblNoti.string = "Select item to delete! "
         }
-        let newChild = cc.instantiate( this.listItem.itemEmpty);;
-        let oldChild = this.inventoryView.children[this.selectSlot]
+        let newChild = cc.instantiate( this.listItem.itemEmpty);
+        newChild.getComponent("Item_31").slot = this.selectSlot;
+        newChild.getComponent("Item_31").inventory_control = this;
+        let oldChild = this.inventoryView.children[this.selectSlot];
 
         this.swapChild(oldChild , newChild, this.selectSlot);
         //this.inventoryView.removeChild(this.inventoryView.children[this.selectSlot]);
@@ -178,11 +186,67 @@ cc.Class({
         this.lblInfoItemType.string = "Type: ";
         this.lblInfoItemEff.string = "Effect: ";
 
+        this.edboxItemName.node.active = true;
+        this.edboxItemQuantity.node.active = true;
+        this.edboxItemType.node.active = true;
+        this.edboxItemEff.node.active = true;
+
+        this.edboxItemName.sting = "";
+        this.edboxItemQuantity.string = "";
+        this.edboxItemType.string = "";
+        this.edboxItemEff.string = "";
+
         this.btnCreate.interactable = false;
         this.btnSave.interactable = true;
+
+        this.edboxItemName.e
     },
     buttonSaveOnClick(){
+        console.log("call save")
 
+        let newItem = cc.instantiate( this.listItem.itemEmpty);
+
+        let itemInfo = newItem.getComponent("Item_31");
+          
+        itemInfo.nameItem = this.edboxItemName.string;
+        itemInfo.effect = this.edboxItemEff.string;
+        itemInfo.typeItem = this.edboxItemType.string;
+        itemInfo.quantityItem = this.edboxItemQuantity.string;
+        itemInfo.equipSlot = -1;
+        console.log("new item name " + itemInfo.nameItem);
+        //itemInfo.slot = data.slot;
+        itemInfo.inventory_control = this;
+        this.showQuantity(newItem,itemInfo.quantityItem);
+
+        let [oldChild , index] = this.findEmptySlot();
+        itemInfo.slot = index;
+        console.log("find "+ index)
+        if(index >= 0 ){
+            this.lblNoti.string = "new Item add to slot: " + index;
+            this.swapChild(oldChild , newItem, index);
+        }
+        
+
+
+        this.btnCreate.interactable = true;
+        this.btnSave.interactable = false;
+
+        this.edboxItemName.node.active = false;
+        this.edboxItemQuantity.node.active = false;
+        this.edboxItemType.node.active = false;
+        this.edboxItemEff.node.active = false;
+    },
+    findEmptySlot(){
+        for (let i = 0; i < this.maxSlot; i++) {
+            let childItem = this.inventoryView.children[i];
+            console.log("run find " + childItem.getComponent("Item_31").quantityItem );
+            if ( childItem.getComponent("Item_31").quantityItem == "-1" ){
+                console.log("find out "+ i)
+                return [childItem,i];
+            }
+                
+        };
+        return [null,-1];
     }
         
 });
