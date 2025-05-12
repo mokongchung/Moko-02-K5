@@ -18,6 +18,7 @@ cc.Class({
         edboxItemQuantity : cc.EditBox,
         edboxItemType : cc.EditBox,
         edboxItemEff : cc.EditBox,
+        edboxItemFind : cc.EditBox,
 
         lblNoti: cc.Label,
 
@@ -247,6 +248,22 @@ cc.Class({
                 
         };
         return [null,-1];
-    }
+    },
+    findItemByName(){
+        let nameFind  = this.edboxItemFind.string;
+        for (let i = 0; i < this.maxSlot; i++) {
+            let childItem = this.inventoryView.children[i];
+            console.log("run find " + childItem.getComponent("Item_31").nameItem );
+            if ( childItem.getComponent("Item_31").nameItem == nameFind ){
+                console.log("find out "+ i)
+                this.lblNoti.string = "Item "+ nameFind+" in slot "+i;
+                this.onItemSelectClick(i);
+                return [childItem,i];
+            }
+                
+        };
+        this.lblNoti.string = "Item not found "+ nameFind;
+        return [null,-1];
+    },
         
 });
