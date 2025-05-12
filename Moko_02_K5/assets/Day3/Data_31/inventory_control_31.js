@@ -25,6 +25,9 @@ cc.Class({
         btnCreate : cc.Button,
         btnSave : cc.Button,
 
+        canavasMain : cc.Canvas,
+        cameraMain : cc.Camera,
+
         spriteFramesArray: {
             default: [],
             type: [cc.SpriteFrame]
@@ -38,6 +41,23 @@ cc.Class({
     onLoad () {
         this.selectSlot = -1 ;
         this.listItem;
+
+
+        this.isDragging = false;
+        this.itemDragingA;
+        this.itemDragingB;
+        
+        this.node.on(cc.Node.EventType.MOUSE_DOWN, this.onMouseDown, this);
+        this.node.on(cc.Node.EventType.MOUSE_UP, this.onMouseUp, this);
+        
+ 
+        this.node.on(cc.Node.EventType.MOUSE_LEAVE, () => {
+            this.isDragging = false;
+            this.itemDragingA = null;
+            this.itemDragingB = null;
+        }, this);
+        
+
 
     },
 
@@ -265,5 +285,65 @@ cc.Class({
         this.lblNoti.string = "Item not found "+ nameFind;
         return [null,-1];
     },
+
+    getNodeUnderDrag(event){
+        //let positionMouse =  this.canavasMain.node.convertToNodeSpaceAR(event.getLocation());
+        let positionMouse = this.cameraMain.getCameraToWorldPoint(event.getLocation())
+        for(let item of this.inventoryView.children ){
+            
+            let itemBody =  item.getBoundingBoxToWorld();
+            console.log("check itemBody"+ itemBody);
+            console.log("check position mouse "+ positionMouse);
+            if (itemBody.contains(positionMouse)) {
+                return item;
+            }
+        }
+        return null;
+    },
+    onMouseDown(event){
+        let itemDraging =  this.getNodeUnderDrag(event);
+        if(itemDraging){
+            this.isDragging = true; //dragg a item not empty
+            this.itemDragingA = itemDraging;
+            console.log("drang trueeee trueee " + itemDraging.getComponent("Item_31").slot);
+        }
+        else{
+            this.itemDragingA = null;
+            console.log("notthing drag here");
+        }
+        
+    },
+
+    swap2item(itemA, itemB){
+        if( !itemA || !itemB)
+            return;
+        let indexA = itemA.getComponent("Item_31").slot;
+        let indexB = itemB.getComponent("Item_31").slot;
+        itemA.getComponent("Item_31").slot = indexB;
+        itemB.getComponent("Item_31").slot = indexA;
+
+        itemA.setSiblingIndex(indexB);
+        itemB.setSiblingIndex(indexA);
+    }, 
+    onMouseUp(event){
+        let itemDraging = this.getNodeUnderDrag(event);
+        if(itemDraging && this.isDragging){
+            
+            this.itemDragingB = itemDraging;
+            this.swap2item(this.itemDragingA,this.itemDragingB);
+            this.isDragging = false;
+            this.itemDragingA = null;
+            this.itemDragingB = null;
+            console.log("drang trueeee trueee " + itemDraging.getComponent("Item_31").slot);
+        }
+        else{
+            this.itemDragingA = null;
+            this.itemDragingB = null;
+            his.isDragging = false;
+            console.log("notthing drag here");
+        }
+    },
+
+
         
 });
