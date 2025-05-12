@@ -39,8 +39,9 @@ cc.Class({
     },
 
     onButtonClick(){
-        this.inventory_control.onItemSelectClick(this.slot);
+        this.inventory_control.onItemSelectClick(this.slot,this.equipSlot);
     },
+
 
     showQuantity(){
 

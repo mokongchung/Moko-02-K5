@@ -6,6 +6,7 @@ cc.Class({
         itemPrefab: cc.Prefab,
         itemEmptyPrefab: cc.Prefab,
         inventoryView: cc.Node,
+        equipSlotView: cc.Node,
 
         listItemPrefab: cc.Prefab,
 
@@ -22,6 +23,8 @@ cc.Class({
 
         lblNoti: cc.Label,
 
+        btnUse : cc.Button,
+        btnDelete: cc.Button,
         btnCreate : cc.Button,
         btnSave : cc.Button,
 
@@ -34,6 +37,7 @@ cc.Class({
         },
 
         maxSlot: 20,
+        equipSlot: 3,
     },
     
     // LIFE-CYCLE CALLBACKS:
@@ -98,6 +102,13 @@ cc.Class({
             newItem.getComponent("Item_31").inventory_control = this;
             this.inventoryView.addChild(newItem); 
         }
+
+        for(let i = 0; i < this.equipSlot; i ++ ){
+            let newItem = cc.instantiate( this.listItem.itemEmpty);
+            newItem.getComponent("Item_31").equipSlot = i;
+            newItem.getComponent("Item_31").inventory_control = this;
+            this.equipSlotView.addChild(newItem);
+        }
         
         for ( let data of itemData) {
             let newItem = cc.instantiate(this.listItem.listItemPrefab[data.id -1]);
@@ -128,19 +139,37 @@ cc.Class({
         this.inventoryView.removeChild(oldChild);
         this.inventoryView.insertChild(newChild, index);
     },
-    onItemSelectClick(slot){
+    onItemSelectClick(slot,equipSlot){
         console.log(slot);
         
-        this.selectSlot = slot;
-        console.log(slot);
-        this.showInfoItem();
+        if(equipSlot >= 0){
+            this.selectSlot = equipSlot;
+            this.showInfoEquipItem();
+            this.btnUse.interactable = false;
+            this.btnDelete.interactable = false;
+        }else{
+            this.selectSlot = slot;
+            this.btnUse.interactable = true;
+            this.btnDelete.interactable = true;
+            console.log(slot);
+            this.showInfoItem();
+        }
     },
-
+    showInfoEquipItem(){
+        let equipItem = this.equipSlotView.children[this.selectSlot].getComponent("Item_31");
+        if(equipItem.quantityItem < 0 ){
+            return;
+        }
+        this.lblInfoItemName.string =  "Name: " + equipItem.nameItem;
+        this.lblInfoItemQuantity.string = "Quantity: " + equipItem.quantityItem;
+        this.lblInfoItemType.string = "Type: "+ equipItem.typeItem;
+        this.lblInfoItemEff.string = "Effect: "+ equipItem.effect;
+    },
     showInfoItem(){
         
         let item = this.inventoryView.children[this.selectSlot].getComponent("Item_31");
         
-        if(item.quantityItem < 0){
+        if(item.quantityItem < 0 ){
             return;
         }
 
@@ -292,8 +321,17 @@ cc.Class({
         for(let item of this.inventoryView.children ){
             
             let itemBody =  item.getBoundingBoxToWorld();
-            console.log("check itemBody"+ itemBody);
-            console.log("check position mouse "+ positionMouse);
+            //console.log("check itemBody"+ itemBody);
+            //console.log("check position mouse "+ positionMouse);
+            if (itemBody.contains(positionMouse)) {
+                return item;
+            }
+        }
+        for(let item of this.equipSlotView.children ){
+            
+            let itemBody =  item.getBoundingBoxToWorld();
+            //console.log("check itemBody"+ itemBody);
+            //console.log("check position mouse "+ positionMouse);
             if (itemBody.contains(positionMouse)) {
                 return item;
             }
@@ -317,13 +355,62 @@ cc.Class({
     swap2item(itemA, itemB){
         if( !itemA || !itemB)
             return;
-        let indexA = itemA.getComponent("Item_31").slot;
-        let indexB = itemB.getComponent("Item_31").slot;
-        itemA.getComponent("Item_31").slot = indexB;
-        itemB.getComponent("Item_31").slot = indexA;
 
-        itemA.setSiblingIndex(indexB);
-        itemB.setSiblingIndex(indexA);
+        let indexA = itemA.getComponent("Item_31").slot;
+        let indexEuipA = itemA.getComponent("Item_31").equipSlot;
+        
+        let indexB = itemB.getComponent("Item_31").slot;
+        let indexEuipB = itemB.getComponent("Item_31").equipSlot;
+        
+        console.log("A "+ indexA + " " + indexEuipA);
+        console.log("B "+ indexB + " " + indexEuipB);
+
+        //swap 2 item in inventory or same euipment
+        if( (indexEuipA < 0  && indexEuipB < 0 )   ){
+
+            console.log("swap 2 item in inventory ");
+            itemA.getComponent("Item_31").slot = indexB;
+            itemB.getComponent("Item_31").slot = indexA;
+
+            itemA.setSiblingIndex(indexB);
+            itemB.setSiblingIndex(indexA);
+        }else if(indexEuipA >= 0 && indexEuipB >= 0 ){
+            console.log("swap 2 item in euipment");
+            itemA.getComponent("Item_31").equipSlot = indexEuipB;
+            itemB.getComponent("Item_31").equipSlot = indexEuipA;
+
+            itemA.setSiblingIndex(indexEuipB);
+            itemB.setSiblingIndex(indexEuipA);
+        }
+        else{ //swap beween inventory and euqipment
+            console.log("swap beween inventory and euqipment");
+            if(indexEuipA >= 0 ){
+                this.equipSlotView.removeChild(itemA);
+                this.inventoryView.removeChild(itemB);
+                this.equipSlotView.insertChild(itemB, indexEuipA);
+                console.log("equip slot "+ indexEuipA);
+                this.inventoryView.insertChild(itemA, indexB);
+
+                itemA.getComponent("Item_31").slot = indexB;
+                itemA.getComponent("Item_31").equipSlot = -1;
+                
+                itemB.getComponent("Item_31").equipSlot = indexEuipA;
+                itemB.getComponent("Item_31").slot = -1;
+
+            }else{
+                this.equipSlotView.removeChild(itemB);
+                this.inventoryView.removeChild(itemA);
+                this.equipSlotView.insertChild(itemA, indexEuipB);
+                console.log("equip slot "+ indexEuipB);
+                this.inventoryView.insertChild(itemB, indexA);
+
+                itemB.getComponent("Item_31").slot = indexA;
+                itemB.getComponent("Item_31").equipSlot = -1;
+                
+                itemA.getComponent("Item_31").equipSlot = indexEuipB;
+                itemA.getComponent("Item_31").slot = -1;
+            }
+        }
     }, 
     onMouseUp(event){
         let itemDraging = this.getNodeUnderDrag(event);
