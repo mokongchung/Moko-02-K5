@@ -43,8 +43,8 @@ cc.Class({
     },
 
     showQuantity(){
-        let lblQuantity = this.getChild(cc.Label);
-        lblQuantity.string = "X "+quantityItem;
+
+        
     }
 
     // update (dt) {},

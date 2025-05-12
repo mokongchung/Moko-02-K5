@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "item_empty",
+    "_name": "item_emptyDefault",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -177,7 +177,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "f0399c49-5332-42f3-b132-54bf10533313"
     },
     "fileId": "76GGxCI41GJ6LGEWX+yTpe",
     "sync": false
@@ -345,7 +345,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "f0399c49-5332-42f3-b132-54bf10533313"
     },
     "fileId": "5e9kAgEvtBLqoZIazOAa35",
     "sync": false
@@ -413,7 +413,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "f0399c49-5332-42f3-b132-54bf10533313"
     },
     "fileId": "1b4ngkn45LEIQgI56KihSN",
     "sync": false
@@ -535,7 +535,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "f0399c49-5332-42f3-b132-54bf10533313"
     },
     "fileId": "20vu0xrzxIAaS6sRi1IR+o",
     "sync": false
