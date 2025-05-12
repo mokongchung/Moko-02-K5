@@ -15,6 +15,8 @@ cc.Class({
 
         timePlay : 60,
         timeSpam : 1,
+        timeUpdateTimeBar : 0.1,
+        timeShowPiontAdd: 1,
 
         camera : cc.Camera,
         listPrefabEnemy : cc.Prefab,
@@ -22,12 +24,16 @@ cc.Class({
         nodeBtnStart    : cc.Node,
         lblShowpoint : cc.Label,
         lblShowEndGamePoint : cc.Label,
+        proBarTimePlayBar  :cc.ProgressBar,
+        
+        nodeCrosshair : cc.Node,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
      onLoad () {
         this.point = 0;
+        this.timeLeft = 0;
         this.listEnemy;
         this.stopGame = false;
      },
@@ -38,7 +44,7 @@ cc.Class({
         console.log( this.listEnemy  +"  "+this.listEnemy.length);
         //this.spawRandomEnemy();
         //this.startGame(1, 5);
-
+        this.customCrosshair();
 
        
     },
@@ -53,9 +59,9 @@ cc.Class({
 
         do{
             let [randomWidth ,randomHeight ] = this.randomPosition();
-            console.log( randomWidth +" "+ randomHeight);
+            console.log( "random position: "+ randomWidth +" "+ randomHeight);
             //newSpawEnemy.setPosition(randomWidth, randomHeight);
-            newSpawEnemy.setPosition(randomWidth, randomHeight);
+            newSpawEnemy.setPosition( this.canvasNode.node.convertToNodeSpaceAR (new cc.Vec2(randomWidth, randomHeight)));
         }while(false);
 
         console.log( "new Enemy spawww" +newSpawEnemy);
@@ -63,8 +69,8 @@ cc.Class({
 
     randomPosition(){
 
-       let randomWidth = this.getRandomInt( -1*this.canvasNode.node.width/2 , this.canvasNode.node.width/2);
-       let randomHeight = this.getRandomInt( -1*this.canvasNode.node.height/2 , this.canvasNode.node.height/2);
+       let randomWidth = this.getRandomInt( 0 , this.canvasNode.node.width);
+       let randomHeight = this.getRandomInt( 0 , this.canvasNode.node.height);
 
 
        return [randomWidth , randomHeight]
@@ -93,8 +99,21 @@ cc.Class({
         this.point += event.detail.point;
         this.lblShowpoint.string = "Point: "+ this.point;
         console.log("point = "+ this.point);
-        this.node.removeChild(nodeEnemy);
-        nodeEnemy.destroy();
+        let lblPoint = nodeEnemy.getComponentInChildren(cc.Label);
+        if( lblPoint){
+            lblPoint.string = "+"+event.detail.point;
+        }
+
+        let btnEnenmy = nodeEnemy.getComponent(cc.Button);
+        if(btnEnenmy){
+            btnEnenmy.interactable = false;
+        }
+
+        this.scheduleOnce(() => {
+            this.node.removeChild(nodeEnemy);
+            nodeEnemy.destroy();
+        }, this.timeShowPiontAdd);
+
 
     },
     onDestroy() {
@@ -104,20 +123,41 @@ cc.Class({
     startGame( timeSpaw = 1, timePlay = 60) {
         console.log("game  start");
 
+        this.point = 0;
+        this.timeLeft = timePlay;
+        this.lblShowpoint.string = "Point: "+ this.point;
+        this.lblShowEndGamePoint.enabled = false;
+
+        this.schedule(this.updateTimeBar, this.timeUpdateTimeBar);
         this.schedule(this.spawRandomEnemy, timeSpaw); 
-        this.scheduleOnce(function () {
+        
+    },
+
+    updateTimeBar(){
+        this.timeLeft -= this.timeUpdateTimeBar;
+        this.timeLeft = Math.floor(this.timeLeft * 100) / 100;
+        if(this.timeLeft <= 0){
+            this.timeLeft = 0; 
             this.unschedule(this.spawRandomEnemy); 
+            this.unschedule(this.updateTimeBar);
             console.log("game over");
             this.nodeBtnStart.active = true;
             this.lblShowEndGamePoint.enabled = true;
             this.lblShowEndGamePoint.string = " Your Point : "+ this.point;
-        }, timePlay);
+        }
+        console.log(this.timeLeft);
+        this.proBarTimePlayBar.progress = (this.timeLeft / (this.timePlay-1));
     },
-    buttonStartGameOnClick(){
 
-        this.point = 0;
-        this.lblShowpoint.string = "Point: "+ this.point;
-        this.lblShowEndGamePoint.enabled = false;
+    customCrosshair(){
+        this.canvasNode.node.on(cc.Node.EventType.MOUSE_MOVE, (event) =>{
+            let pos = event.getLocation();
+            //console.log( "custome "+pos +" " + this.nodeCrosshair);
+            this.nodeCrosshair.setPosition(this.canvasNode.node.convertToNodeSpaceAR(pos));
+        });
+    },
+
+    buttonStartGameOnClick(){
         this.nodeBtnStart.active = false;
         this.startGame(this.timeSpam ,this.timePlay);
     },
