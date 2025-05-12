@@ -39,12 +39,13 @@ cc.Class({
     },
 
     onButtonClick(){
-        this.inventory_control.onItemSelectClick(this.slot);
+        this.inventory_control.onItemSelectClick(this.slot,this.equipSlot);
     },
 
+
     showQuantity(){
-        let lblQuantity = this.getChild(cc.Label);
-        lblQuantity.string = "X "+quantityItem;
+
+        
     }
 
     // update (dt) {},
