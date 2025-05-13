@@ -1,13 +1,10 @@
 async function asyncParallel( arrayFunc = [] , endCallBack){
     let fnresult = [];
+    let arrayPromise = [];
+
+
     for(let i = 0; i < arrayFunc.length; i ++){
-        let callFunc = arrayFunc[i];
-        if (typeof callFunc === 'function'){
-            await doAsync(arrayFunc[i]).then(result => {
-                console.log(result); 
-                fnresult[i] = result;
-            });
-        }
+        arrayPromise[i] =  doAsync(arrayFunc[i]);
     }
     endCallBack(fnresult);
 
