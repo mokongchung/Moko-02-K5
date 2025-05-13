@@ -35,15 +35,17 @@ cc.Class({
         this.point = 0;
         this.timeLeft = 0;
         this.listEnemy;
+        
         this.stopGame = false;
      },
 
     start () {
-        this.node.on("hitEnemy", this.onEnemyHit, this)
-        this.listEnemy =  cc.instantiate(this.listPrefabEnemy.getComponent("listEnemy_41").listEnemy);
+ 
+        this.listEnemy =  cc.instantiate(this.listPrefabEnemy).getComponent("listEnemy_41").listEnemy;
         console.log( this.listEnemy  +"  "+this.listEnemy.length);
         //this.spawRandomEnemy();
         //this.startGame(1, 5);
+        this.node.on("hitEnemy", this.onEnemyHit, this)
         this.customCrosshair();
 
        
