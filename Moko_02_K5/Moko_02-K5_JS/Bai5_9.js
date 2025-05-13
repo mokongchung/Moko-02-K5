@@ -1,30 +1,31 @@
 function asyncParallel( arrayFunc = [] , endCallBack){
 
-    let finalResult = [];
+  let finalResult = [];
+  callFunc(0,finalResult);
 
-
-    for(let i = 0; i < arrayFunc.length ; i ++){
-        createNewPromise(arrayFunc[i], finalResult , i).then(result => {
-            console.log("aaa" + result); 
+  function callFunc(index , finalResult ){
+          if(index >= 0 && index < arrayFunc.length ){
+            let func = arrayFunc[index];
+            doAsync(func).then(result => {
+              console.log(result); 
+              finalResult[index] = result;
+                callFunc(index+1,finalResult)
           });
-    }
-
-
-    function createNewPromise(callback , finalResult, index) {
-        return new Promise((resolve, reject) => {
-          try {
-            
-            callback( (result) => {
-                finalResult[index] = result;
-            }); // Gọi hàm callback
-            resolve(finalResult);           
-          } catch (error) {
-            reject(error);             
+          }else{
+            endCallBack(finalResult);
           }
-        });
-      }
+  }
 
-    endCallBack(finalResult);
+
+  function doAsync(func) {
+      return new Promise((resolve) => {
+          func( (value) =>{
+              resolve( value);
+          });
+      });
+  }
+
+
     return finalResult;
 }
 
