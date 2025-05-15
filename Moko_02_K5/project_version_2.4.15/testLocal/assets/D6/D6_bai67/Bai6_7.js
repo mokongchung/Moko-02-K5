@@ -40,6 +40,8 @@ const lazyMan = cc.Class({
             console.log("end run func");     
         }
         this.runing = false;
+
+        return this;
     },
 
     
@@ -100,7 +102,7 @@ const lazyMan = cc.Class({
             .start();
         });
       });
-      console.log( "add Move to new location " + this.taskQueue);
+      console.log( "add Move to new location " );
       return this;
     }
 

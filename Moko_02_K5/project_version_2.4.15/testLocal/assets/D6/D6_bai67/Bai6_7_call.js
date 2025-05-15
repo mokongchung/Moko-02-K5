@@ -1,11 +1,12 @@
-// Learn cc.Class:
-//  - https://docs.cocos.com/creator/2.4/manual/en/scripting/class.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/2.4/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
-
-
+/*
+    1. Quản lý hành vi nhân vật (Character Behavior)
+    2. Hành vi của AI
+    3. Xây dựng UI động (UI Builder)
+    4. Cutscene hoặc hoạt cảnh (Cutscene Scripting)
+    5. Xử lý animation sequence
+    6. Tạo các lệnh test/gameplay script dễ đọc
+    7. Xây dựng hệ thống cấu hình/setting
+*/
 
 
 
@@ -47,11 +48,11 @@ cc.Class({
     },
 
     addMove( direction) {
-        // Lấy vị trí hiện tại
-        const currentPos = this.lazyManNode.getPosition();
-        let newPos = currentPos;
+        
+        //const currentPos = this.lazyManNode.getPosition();
+        //let newPos = currentPos;
         console.log(direction);
-        // Tính toán vị trí mới dựa vào hướng
+
         this.lazyMan.moveTo(  direction  )
        
     },
