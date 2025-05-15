@@ -38,12 +38,12 @@ cc.Class({
             //lazyMan.eat("rice");
             //lazyMan.mySleep(500);
             //lazyMan.eat("apple");
-            this.lazyMan.eat("rice").sleep(5000).eat("apple");
+            
 
             this.lazyMan.runTasks();
             //await lazyMan.mySleep();
 
-            console.log("Jack has finished sleeping!");
+            
         }
     },
 

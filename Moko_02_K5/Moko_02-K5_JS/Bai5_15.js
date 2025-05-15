@@ -10,15 +10,12 @@ async function asyncParallel( arrayFunc = [] , endCallBack){
 
     Promise.race(arrayPromise.map(fn => fn()))
     .then(result => {
-        console.log("🎉 Kết quả đầu tiên:", result);
+        console.log("First done : ", result);
     })
     .catch(error => {
-        console.error("❌ Lỗi:", error);
+        console.error("Error: ", error);
     });
 
-    Promise.race(arrayPromise)
-    .then(result => console.log("✅ Kết quả đầu tiên:", result))
-    .catch(error => console.log("❌ Lỗi:", error.message));
     endCallBack(value);
 
 
@@ -37,7 +34,7 @@ async function asyncParallel( arrayFunc = [] , endCallBack){
 
     function timeoutFunc() {
     return new Promise((resolve, reject) => {
-        setTimeout(() => reject(new Error("⏰ Timeout")), 3000);
+        setTimeout(() => reject(new Error("time out")), 3000);
     });
 }
 }
