@@ -7,7 +7,7 @@ async function asyncParallel( arrayFunc = [] , endCallBack){
     for(let i = 0; i < arrayFunc.length; i ++){
         arrayPromise[i] =  doAsync(arrayFunc[i]);
     }
-    // dùng reduce của array  thực thi tuần tự promisse
+    
     let value = arrayPromise.reduce((accumulator, currentValue, currentIndex) => {
         // xử lý và return giá trị tích lũy tiếp theo
         //let funcPromis = arrayPromise[currentIndex];
@@ -29,10 +29,10 @@ async function asyncParallel( arrayFunc = [] , endCallBack){
         })
     ))
     .then(results => {
-        console.log("✅ All done:", results);
+        console.log("Done:", results);
     })
     .catch(error => {
-        console.error("❌ Có lỗi:", error);
+        console.error("Error:", error);
     });
 
 
